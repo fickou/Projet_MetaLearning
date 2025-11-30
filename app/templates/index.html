@@ -1,0 +1,170 @@
+<!-- app/templates/index.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MetaLearning Occupancy — Test Interface</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+      <span class="brand-icon"><i class="fas fa-brain"></i></span>
+      <span class="brand-text">MetaLearning <small class="text-muted">Occupancy</small></span>
+    </a>
+    <div class="ms-auto d-none d-md-flex align-items-center">
+      <small class="text-muted me-3">Interface de démonstration</small>
+      <a class="btn btn-outline-light btn-sm" href="#" role="button"><i class="fas fa-info-circle me-1"></i> Aide</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="mb-4">
+            {% for category, msg in messages %}
+              <div class="alert glass-alert alert-{{ category }}" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i> {{ msg }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <div class="row g-4">
+        <!-- Form card -->
+        <div class="col-lg-6">
+          <div class="glass-card p-4">
+            <h4 class="section-title"><i class="fas fa-sliders-h me-2"></i>Paramètres d'entrée</h4>
+            <p class="text-muted mb-3">Saisir les mesures issues des capteurs (test UI — valeurs factices).</p>
+
+            <form method="POST" novalidate>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Température (°C)</label>
+                  <input required name="temp" type="number" step="any" min="-30" max="60"
+                         class="form-control" placeholder="Ex: 21.5" value="{{ form.temp }}">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Humidité (%)</label>
+                  <input required name="hum" type="number" step="any" min="0" max="100"
+                         class="form-control" placeholder="Ex: 45.2" value="{{ form.hum }}">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Lumière (Lux)</label>
+                  <input required name="light" type="number" step="any" min="0"
+                         class="form-control" placeholder="Ex: 520" value="{{ form.light }}">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">CO₂ (ppm)</label>
+                  <input required name="co2" type="number" step="any" min="0"
+                         class="form-control" placeholder="Ex: 750" value="{{ form.co2 }}">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Humidity Ratio</label>
+                  <input required name="hr" type="number" step="any" min="0"
+                         class="form-control" placeholder="Ex: 0.0045" value="{{ form.hr }}">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Index Temps</label>
+                  <input required name="time" type="number" step="any" min="0"
+                         class="form-control" placeholder="Ex: 15" value="{{ form.time }}">
+                </div>
+              </div>
+
+              <div class="mt-4 d-grid">
+                <button class="btn btn-primary btn-predict" type="submit">
+                  <i class="fas fa-magic me-2"></i> Lancer la prédiction
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Result card -->
+        <div class="col-lg-6">
+          <div class="glass-card p-4 h-100">
+            <h4 class="section-title"><i class="fas fa-chart-line me-2"></i>Résultats</h4>
+            <p class="text-muted mb-3">Zone d'affichage des résultats — test UI.</p>
+
+            {% if prediction %}
+              <div class="text-center mb-3">
+                <div class="icon-circle {% if 'Occupé' in prediction %}occupied{% else %}unoccupied{% endif %}">
+                  {% if 'Occupé' in prediction %}
+                    <i class="fas fa-users"></i>
+                  {% else %}
+                    <i class="fas fa-door-open"></i>
+                  {% endif %}
+                </div>
+
+                <div class="prediction-badge {% if 'Occupé' in prediction %}occupied{% else %}unoccupied{% endif %}">
+                  <i class="fas fa-check-circle me-2"></i>
+                  <span class="fs-5">{{ prediction }}</span>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="info-item">
+                  <div class="info-label"><i class="fas fa-cog me-1"></i> Modèle utilisé</div>
+                  <div class="info-value">{{ model_name }}</div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <div class="info-item">
+                  <div class="info-label"><i class="fas fa-chart-bar me-1"></i> Confiance</div>
+                  <div class="info-value">{{ confidence_percent }}</div>
+                  <div class="confidence-bar mt-2">
+                    <div class="confidence-fill" style="width: {{ confidence_percent }};"></div>
+                  </div>
+                </div>
+              </div>
+
+            {% else %}
+              <div class="alert alert-info glass-alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                Soumettre des valeurs dans le formulaire pour voir une prédiction factice (UI test).
+              </div>
+            {% endif %}
+
+            <hr>
+
+            <small class="text-muted">Cette interface ne réalise pas de prédictions réelles — elle sert à tester l'UI. Remplace la logique côté serveur par le pipeline ML pour résultats réels.</small>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer class="py-4 text-center text-white-50">
+  <div class="container">
+    <small>Projet MetaLearning — Interface de démonstration • Master 2</small>
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
