@@ -1,170 +1,908 @@
-<!-- app/templates/index.html -->
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MetaLearning Occupancy — Test Interface</title>
-
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- FontAwesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Occupancy Detection – Meta Learning Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-
 <body>
-<nav class="navbar navbar-expand-lg navbar-light sticky-top">
-  <div class="container">
-    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
-      <span class="brand-icon"><i class="fas fa-brain"></i></span>
-      <span class="brand-text">MetaLearning <small class="text-muted">Occupancy</small></span>
-    </a>
-    <div class="ms-auto d-none d-md-flex align-items-center">
-      <small class="text-muted me-3">Interface de démonstration</small>
-      <a class="btn btn-outline-light btn-sm" href="#" role="button"><i class="fas fa-info-circle me-1"></i> Aide</a>
-    </div>
-  </div>
-</nav>
-
-<main class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-10">
-
-      {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          <div class="mb-4">
-            {% for category, msg in messages %}
-              <div class="alert glass-alert alert-{{ category }}" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i> {{ msg }}
-              </div>
-            {% endfor %}
-          </div>
-        {% endif %}
-      {% endwith %}
-
-      <div class="row g-4">
-        <!-- Form card -->
-        <div class="col-lg-6">
-          <div class="glass-card p-4">
-            <h4 class="section-title"><i class="fas fa-sliders-h me-2"></i>Paramètres d'entrée</h4>
-            <p class="text-muted mb-3">Saisir les mesures issues des capteurs (test UI — valeurs factices).</p>
-
-            <form method="POST" novalidate>
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label class="form-label">Température (°C)</label>
-                  <input required name="temp" type="number" step="any" min="-30" max="60"
-                         class="form-control" placeholder="Ex: 21.5" value="{{ form.temp }}">
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="nav-logo">
+            <div class="logo-icon">🧠</div>
+            <div>
+                <div class="nav-title">
+                    Smart Occupancy Detection
+                    <span class="nav-subtitle">Meta Learning System</span>
                 </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Humidité (%)</label>
-                  <input required name="hum" type="number" step="any" min="0" max="100"
-                         class="form-control" placeholder="Ex: 45.2" value="{{ form.hum }}">
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Lumière (Lux)</label>
-                  <input required name="light" type="number" step="any" min="0"
-                         class="form-control" placeholder="Ex: 520" value="{{ form.light }}">
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">CO₂ (ppm)</label>
-                  <input required name="co2" type="number" step="any" min="0"
-                         class="form-control" placeholder="Ex: 750" value="{{ form.co2 }}">
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Humidity Ratio</label>
-                  <input required name="hr" type="number" step="any" min="0"
-                         class="form-control" placeholder="Ex: 0.0045" value="{{ form.hr }}">
-                </div>
-
-                <div class="col-md-6">
-                  <label class="form-label">Index Temps</label>
-                  <input required name="time" type="number" step="any" min="0"
-                         class="form-control" placeholder="Ex: 15" value="{{ form.time }}">
-                </div>
-              </div>
-
-              <div class="mt-4 d-grid">
-                <button class="btn btn-primary btn-predict" type="submit">
-                  <i class="fas fa-magic me-2"></i> Lancer la prédiction
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
         </div>
+        <div class="nav-status">
+            <span class="status-dot"></span>
+            <span style="font-size: 13px; font-weight: 600;">System Operational</span>
+        </div>
+    </nav>
 
-        <!-- Result card -->
-        <div class="col-lg-6">
-          <div class="glass-card p-4 h-100">
-            <h4 class="section-title"><i class="fas fa-chart-line me-2"></i>Résultats</h4>
-            <p class="text-muted mb-3">Zone d'affichage des résultats — test UI.</p>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-icon active" onclick="showSection('dashboard')" data-section="dashboard" title="Dashboard">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        </div>
+        <div class="sidebar-icon" onclick="showSection('models')" data-section="models" title="Models">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+        </div>
+        <div class="sidebar-icon" onclick="showSection('sensors')" data-section="sensors" title="Sensors">
+            <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+        </div>
+        <div class="sidebar-icon" onclick="showSection('stats')" data-section="stats" title="Statistics">
+            <svg viewBox="0 0 24 24"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg>
+        </div>
+        <div class="sidebar-icon" onclick="showSection('history')" data-section="history" title="History">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </div>
+        <div class="sidebar-icon" onclick="showSection('settings')" data-section="settings" title="Settings">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M12 1v6m0 6v6m9-9h-6m-6 0H3"></path></svg>
+        </div>
+    </aside>
 
-            {% if prediction %}
-              <div class="text-center mb-3">
-                <div class="icon-circle {% if 'Occupé' in prediction %}occupied{% else %}unoccupied{% endif %}">
-                  {% if 'Occupé' in prediction %}
-                    <i class="fas fa-users"></i>
-                  {% else %}
-                    <i class="fas fa-door-open"></i>
-                  {% endif %}
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" style="padding: 15px 20px; border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s ease;">
+                    <span>{% if category == 'danger' %}❌{% elif category == 'warning' %}⚠️{% else %}✅{% endif %}</span>
+                    <span>{{ message }}</span>
                 </div>
-
-                <div class="prediction-badge {% if 'Occupé' in prediction %}occupied{% else %}unoccupied{% endif %}">
-                  <i class="fas fa-check-circle me-2"></i>
-                  <span class="fs-5">{{ prediction }}</span>
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <div class="info-item">
-                  <div class="info-label"><i class="fas fa-cog me-1"></i> Modèle utilisé</div>
-                  <div class="info-value">{{ model_name }}</div>
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <div class="info-item">
-                  <div class="info-label"><i class="fas fa-chart-bar me-1"></i> Confiance</div>
-                  <div class="info-value">{{ confidence_percent }}</div>
-                  <div class="confidence-bar mt-2">
-                    <div class="confidence-fill" style="width: {{ confidence_percent }};"></div>
-                  </div>
-                </div>
-              </div>
-
-            {% else %}
-              <div class="alert alert-info glass-alert-info">
-                <i class="fas fa-info-circle me-2"></i>
-                Soumettre des valeurs dans le formulaire pour voir une prédiction factice (UI test).
-              </div>
+                {% endfor %}
             {% endif %}
+        {% endwith %}
 
-            <hr>
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="content-section active">
+            <div class="dashboard-grid">
+                <!-- Input Form -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <div class="card-icon">📊</div>
+                        <div>
+                            <div class="card-title">Sensor Data Input</div>
+                            <div class="card-subtitle">Enter IoT sensor measurements</div>
+                        </div>
+                    </div>
 
-            <small class="text-muted">Cette interface ne réalise pas de prédictions réelles — elle sert à tester l'UI. Remplace la logique côté serveur par le pipeline ML pour résultats réels.</small>
-          </div>
+                    <form method="POST" action="/" id="predictionForm">
+                        <div class="input-grid">
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <svg viewBox="0 0 24 24"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
+                                    Temperature (°C)
+                                </label>
+                                <input name="temp" type="number" step="0.01" class="input-field" placeholder="21.5" value="{{ form.temp }}" required>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                                    Humidity (%)
+                                </label>
+                                <input name="hum" type="number" step="0.01" class="input-field" placeholder="45.2" value="{{ form.hum }}" required>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                                    Light (Lux)
+                                </label>
+                                <input name="light" type="number" step="0.01" class="input-field" placeholder="520" value="{{ form.light }}" required>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
+                                    CO₂ (ppm)
+                                </label>
+                                <input name="co2" type="number" step="0.01" class="input-field" placeholder="750" value="{{ form.co2 }}" required>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+                                    Humidity Ratio
+                                </label>
+                                <input name="hr" type="number" step="0.0001" class="input-field" placeholder="0.0045" value="{{ form.hr }}" required>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">
+                                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                    Time Index
+                                </label>
+                                <input name="time" type="number" step="1" class="input-field" placeholder="15" value="{{ form.time }}">
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary">
+                                <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                                Predict Occupancy
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                                <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"></path><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+                                Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Prediction Results -->
+                <div class="glass-card">
+                    <div class="card-header">
+                        <div class="card-icon">🎯</div>
+                        <div>
+                            <div class="card-title">Prediction Results</div>
+                            <div class="card-subtitle">Meta-learning model output</div>
+                        </div>
+                    </div>
+
+                    {% if prediction %}
+                    <div class="prediction-result">
+                        <div class="prediction-icon-large">
+                            {% if 'Occupé' in prediction %}👥{% else %}🚪{% endif %}
+                        </div>
+                        <div class="prediction-label">Prediction Status</div>
+                        <div class="prediction-value">{{ prediction }}</div>
+                        
+                        <div class="prediction-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Selected Model</div>
+                                <div class="detail-value">{{ model_name }}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Confidence Score</div>
+                                <div class="detail-value">{{ confidence_percent }}</div>
+                                <div class="confidence-bar">
+                                    <div class="confidence-fill" style="width: {{ confidence_percent }};"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">20K+</div>
+                            <div class="stat-label">Training Samples</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">4</div>
+                            <div class="stat-label">Base Models</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">{{ confidence_percent }}</div>
+                            <div class="stat-label">Current Confidence</div>
+                        </div>
+                    </div>
+
+                    <div class="model-selection">
+                        {% if all_models_details %}
+                            <div class="model-card {% if model_name == 'Decision Tree' %}selected{% endif %}">
+                                <div class="model-icon">🌳</div>
+                                <div class="model-name">Decision Tree</div>
+                                <div class="model-score">{{ all_models_details.get('Decision Tree', {}).get('confidence_percent', '--') }}</div>
+                                <div style="font-size: 10px; color: var(--text-secondary); margin-top: 5px;">
+                                    Pred: {{ all_models_details.get('Decision Tree', {}).get('prediction', '--') }}
+                                </div>
+                            </div>
+                            <div class="model-card {% if model_name == 'Random Forest' %}selected{% endif %}">
+                                <div class="model-icon">🌲</div>
+                                <div class="model-name">Random Forest</div>
+                                <div class="model-score">{{ all_models_details.get('Random Forest', {}).get('confidence_percent', '--') }}</div>
+                                <div style="font-size: 10px; color: var(--text-secondary); margin-top: 5px;">
+                                    Pred: {{ all_models_details.get('Random Forest', {}).get('prediction', '--') }}
+                                </div>
+                            </div>
+                            <div class="model-card {% if model_name == 'SVM' %}selected{% endif %}">
+                                <div class="model-icon">⚡</div>
+                                <div class="model-name">SVM</div>
+                                <div class="model-score">{{ all_models_details.get('SVM', {}).get('confidence_percent', '--') }}</div>
+                                <div style="font-size: 10px; color: var(--text-secondary); margin-top: 5px;">
+                                    Pred: {{ all_models_details.get('SVM', {}).get('prediction', '--') }}
+                                </div>
+                            </div>
+                            <div class="model-card {% if model_name == 'Naive Bayes' %}selected{% endif %}">
+                                <div class="model-icon">📊</div>
+                                <div class="model-name">Naive Bayes</div>
+                                <div class="model-score">{{ all_models_details.get('Naive Bayes', {}).get('confidence_percent', '--') }}</div>
+                                <div style="font-size: 10px; color: var(--text-secondary); margin-top: 5px;">
+                                    Pred: {{ all_models_details.get('Naive Bayes', {}).get('prediction', '--') }}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="model-card">
+                                <div class="model-icon">🌳</div>
+                                <div class="model-name">Decision Tree</div>
+                                <div class="model-score">--</div>
+                            </div>
+                            <div class="model-card">
+                                <div class="model-icon">🌲</div>
+                                <div class="model-name">Random Forest</div>
+                                <div class="model-score">--</div>
+                            </div>
+                            <div class="model-card">
+                                <div class="model-icon">⚡</div>
+                                <div class="model-name">SVM</div>
+                                <div class="model-score">--</div>
+                            </div>
+                            <div class="model-card">
+                                <div class="model-icon">📊</div>
+                                <div class="model-name">Naive Bayes</div>
+                                <div class="model-score">--</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📊</div>
+                        <div class="empty-state-text">
+                            Enter the sensor values and click "Predict Occupancy" to see the results.<br>
+                            The Meta-Learning system will analyze the data and select the best model.
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Explainability Section -->
+                <div class="glass-card full-width">
+                    <div class="card-header">
+                        <div class="card-icon">🔍</div>
+                        <div>
+                            <div class="card-title">Meta-Learning Explainability</div>
+                            <div class="card-subtitle">Model selection process visualization</div>
+                        </div>
+                    </div>
+
+                    <div class="explainability-flow">
+                        <div class="flow-step">
+                            <div class="flow-icon">📥</div>
+                            <div class="flow-label">Input Data<br>Normalization</div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-icon">🤖</div>
+                            <div class="flow-label">4 Base Models<br>Predictions</div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-icon">🧮</div>
+                            <div class="flow-label">Meta-Features<br>Extraction</div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-icon">🎯</div>
+                            <div class="flow-label">KNN Meta-Model<br>Selection (k=5)</div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-icon">✅</div>
+                            <div class="flow-label">Final<br>Prediction</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px;">
+                        <div style="font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Meta-Features (8 Features Total: Confidence Max + Margin)
+                        </div>
+                        <div class="meta-features">
+                            <div class="meta-feature-card">
+                                <div class="meta-feature-icon">📈</div>
+                                <div class="meta-feature-name">DT Confidence</div>
+                                <div class="meta-feature-value">max(P)</div>
+                            </div>
+                            <div class="meta-feature-card">
+                                <div class="meta-feature-icon">📊</div>
+                                <div class="meta-feature-name">DT Margin</div>
+                                <div class="meta-feature-value">|P₁ - P₂|</div>
+                            </div>
+                            <div class="meta-feature-card">
+                                <div class="meta-feature-icon">📈</div>
+                                <div class="meta-feature-name">RF Confidence</div>
+                                <div class="meta-feature-value">max(P)</div>
+                            </div>
+                            <div class="meta-feature-card">
+                                <div class="meta-feature-icon">📊</div>
+                                <div class="meta-feature-name">RF Margin</div>
+                                <div class="meta-feature-value">|P₁ - P₂|</div>
+                            </div>
+                            <div class="meta-feature-card">
+                                <div class="meta-feature-icon">📈</div>
+                                <div class="meta-feature-name">SVM Confidence</div>
+                                <div class="meta-feature-value">max(P)</div>
+                            </div>
+                            <div class="meta-feature-card">
+                                <div class="meta-feature-icon">📊</div>
+                                <div class="meta-feature-name">SVM Margin</div>
+                                <div class="meta-feature-value">|P₁ - P₂|</div>
+                            </div>
+                            <div class="meta-feature-card">
+                                <div class="meta-feature-icon">📈</div>
+                                <div class="meta-feature-name">NB Confidence</div>
+                                <div class="meta-feature-value">max(P)</div>
+                            </div>
+                            <div class="meta-feature-card">
+                                <div class="meta-feature-icon">📊</div>
+                                <div class="meta-feature-name">NB Margin</div>
+                                <div class="meta-feature-value">|P₁ - P₂|</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
 
-    </div>
-  </div>
-</main>
+        <!-- Models Section -->
+        <div id="models-section" class="content-section" style="display: none;">
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-icon">🤖</div>
+                    <div>
+                        <div class="card-title">Base Models Information</div>
+                        <div class="card-subtitle">Details about the 4 classification models</div>
+                    </div>
+                </div>
+                <div class="model-selection" style="grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 20px;">
+                    <div class="model-card" style="padding: 30px;">
+                        <div class="model-icon" style="width: 60px; height: 60px; font-size: 30px; margin-bottom: 15px;">🌳</div>
+                        <div class="model-name" style="font-size: 18px; margin-bottom: 10px;">Decision Tree</div>
+                        <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+                            Fast and interpretable classifier using tree-based decision rules.
+                        </div>
+                    </div>
+                    <div class="model-card" style="padding: 30px;">
+                        <div class="model-icon" style="width: 60px; height: 60px; font-size: 30px; margin-bottom: 15px;">🌲</div>
+                        <div class="model-name" style="font-size: 18px; margin-bottom: 10px;">Random Forest</div>
+                        <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+                            Ensemble of decision trees for robust predictions.
+                        </div>
+                    </div>
+                    <div class="model-card" style="padding: 30px;">
+                        <div class="model-icon" style="width: 60px; height: 60px; font-size: 30px; margin-bottom: 15px;">⚡</div>
+                        <div class="model-name" style="font-size: 18px; margin-bottom: 10px;">SVM</div>
+                        <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+                            Support Vector Machine for complex decision boundaries.
+                        </div>
+                    </div>
+                    <div class="model-card" style="padding: 30px;">
+                        <div class="model-icon" style="width: 60px; height: 60px; font-size: 30px; margin-bottom: 15px;">📊</div>
+                        <div class="model-name" style="font-size: 18px; margin-bottom: 10px;">Naive Bayes</div>
+                        <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+                            Probabilistic classifier based on Bayes' theorem.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<footer class="py-4 text-center text-white-50">
-  <div class="container">
-    <small>Projet MetaLearning — Interface de démonstration • Master 2</small>
-  </div>
-</footer>
+        <!-- Sensors Section -->
+        <div id="sensors-section" class="content-section" style="display: none;">
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-icon">📡</div>
+                    <div>
+                        <div class="card-title">IoT Sensors Information</div>
+                        <div class="card-subtitle">Details about the 6 environmental sensors</div>
+                    </div>
+                </div>
+                <div style="margin-top: 30px;">
+                    <div class="meta-features" style="grid-template-columns: repeat(3, 1fr);">
+                        <div class="meta-feature-card" style="padding: 25px;">
+                            <div class="meta-feature-icon" style="width: 50px; height: 50px; font-size: 24px;">🌡️</div>
+                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">Temperature</div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">-30°C to 60°C</div>
+                        </div>
+                        <div class="meta-feature-card" style="padding: 25px;">
+                            <div class="meta-feature-icon" style="width: 50px; height: 50px; font-size: 24px;">💧</div>
+                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">Humidity</div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">0% to 100%</div>
+                        </div>
+                        <div class="meta-feature-card" style="padding: 25px;">
+                            <div class="meta-feature-icon" style="width: 50px; height: 50px; font-size: 24px;">💡</div>
+                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">Light</div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">0 to 2000 Lux</div>
+                        </div>
+                        <div class="meta-feature-card" style="padding: 25px;">
+                            <div class="meta-feature-icon" style="width: 50px; height: 50px; font-size: 24px;">☁️</div>
+                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">CO₂</div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">0 to 5000 ppm</div>
+                        </div>
+                        <div class="meta-feature-card" style="padding: 25px;">
+                            <div class="meta-feature-icon" style="width: 50px; height: 50px; font-size: 24px;">💦</div>
+                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">Humidity Ratio</div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">0 to 0.02</div>
+                        </div>
+                        <div class="meta-feature-card" style="padding: 25px;">
+                            <div class="meta-feature-icon" style="width: 50px; height: 50px; font-size: 24px;">⏰</div>
+                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">Time Index</div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">Temporal feature</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Stats Section -->
+        <div id="stats-section" class="content-section" style="display: none;">
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-icon">📈</div>
+                    <div>
+                        <div class="card-title">System Statistics</div>
+                        <div class="card-subtitle">Performance metrics and dataset information</div>
+                    </div>
+                </div>
+                <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 30px;">
+                    <div class="stat-card" style="padding: 40px;">
+                        <div class="stat-value" style="font-size: 48px;">20K+</div>
+                        <div class="stat-label">Training Samples</div>
+                    </div>
+                    <div class="stat-card" style="padding: 40px;">
+                        <div class="stat-value" style="font-size: 48px;">98.7%</div>
+                        <div class="stat-label">Overall Accuracy</div>
+                    </div>
+                    <div class="stat-card" style="padding: 40px;">
+                        <div class="stat-value" style="font-size: 48px;">4</div>
+                        <div class="stat-label">Base Models</div>
+                    </div>
+                    <div class="stat-card" style="padding: 40px;">
+                        <div class="stat-value" style="font-size: 48px;">55%</div>
+                        <div class="stat-label">Unoccupied</div>
+                    </div>
+                    <div class="stat-card" style="padding: 40px;">
+                        <div class="stat-value" style="font-size: 48px;">45%</div>
+                        <div class="stat-label">Occupied</div>
+                    </div>
+                    <div class="stat-card" style="padding: 40px;">
+                        <div class="stat-value" style="font-size: 48px;">6</div>
+                        <div class="stat-label">Features</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Section -->
+        <div id="history-section" class="content-section" style="display: none;">
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-icon">📋</div>
+                    <div>
+                        <div class="card-title">Prediction History</div>
+                        <div class="card-subtitle">Recent prediction records</div>
+                    </div>
+                </div>
+                <div style="margin-top: 30px; text-align: center; padding: 60px 20px;">
+                    <div style="font-size: 4rem; opacity: 0.3; margin-bottom: 20px;">📋</div>
+                    <div style="color: var(--text-secondary); font-size: 14px;">
+                        Prediction history will be displayed here.<br>
+                        Feature coming soon in the next version.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="settings-section" class="content-section" style="display: none;">
+            <div class="glass-card">
+                <div class="card-header">
+                    <div class="card-icon">⚙️</div>
+                    <div>
+                        <div class="card-title">System Settings</div>
+                        <div class="card-subtitle">Configuration and preferences</div>
+                    </div>
+                </div>
+                <div style="margin-top: 30px;">
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <div class="detail-label">Meta-Model Type</div>
+                        <div class="detail-value">KNN (k=5)</div>
+                    </div>
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <div class="detail-label">Scaler</div>
+                        <div class="detail-value">StandardScaler</div>
+                    </div>
+                    <div class="detail-item" style="margin-bottom: 15px;">
+                        <div class="detail-label">Meta-Features</div>
+                        <div class="detail-value">8 features (Confidence + Margin × 4 models)</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Dataset Source</div>
+                        <div class="detail-value">UCI Machine Learning Repository</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-text">
+            © 2025 Smart Occupancy Detection System – M2 Data Mining Project | Meta-Learning Architecture | Powered by IoT Sensors
+        </div>
+    </footer>
+
+    <script>
+        // ========================================
+        // NAVIGATION ET GESTION DES SECTIONS
+        // ========================================
+        
+        function showSection(sectionName) {
+            // Cacher toutes les sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.style.display = 'none';
+                section.classList.remove('active');
+            });
+            
+            // Afficher la section sélectionnée
+            const targetSection = document.getElementById(sectionName + '-section');
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                targetSection.classList.add('active');
+                
+                // Animation d'entrée
+                targetSection.style.opacity = '0';
+                targetSection.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    targetSection.style.transition = 'all 0.5s ease';
+                    targetSection.style.opacity = '1';
+                    targetSection.style.transform = 'translateY(0)';
+                }, 10);
+            }
+            
+            // Mettre à jour les icônes de la sidebar
+            const sidebarIcons = document.querySelectorAll('.sidebar-icon');
+            sidebarIcons.forEach(icon => {
+                icon.classList.remove('active');
+                if (icon.dataset.section === sectionName) {
+                    icon.classList.add('active');
+                }
+            });
+        }
+        
+        // ========================================
+        // RÉINITIALISATION DU FORMULAIRE
+        // ========================================
+        
+        function resetForm() {
+            const form = document.getElementById('predictionForm');
+            if (form) {
+                form.reset();
+                
+                // Animation de confirmation
+                const resetBtn = event.target;
+                const originalHTML = resetBtn.innerHTML;
+                resetBtn.innerHTML = '<svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"></path></svg> Reset Done!';
+                resetBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                
+                setTimeout(() => {
+                    resetBtn.innerHTML = originalHTML;
+                    resetBtn.style.background = '';
+                }, 1500);
+            }
+        }
+        
+        // ========================================
+        // VALIDATION EN TEMPS RÉEL
+        // ========================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('.input-field');
+            
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const min = parseFloat(this.getAttribute('min'));
+                    const max = parseFloat(this.getAttribute('max'));
+                    const value = parseFloat(this.value);
+                    
+                    if (this.value && (isNaN(value) || (min && value < min) || (max && value > max))) {
+                        this.style.borderColor = '#ef4444';
+                        this.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.15)';
+                    } else {
+                        this.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                        this.style.boxShadow = '';
+                    }
+                });
+                
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#6366f1';
+                    this.style.boxShadow = '0 0 0 3px rgba(99, 102, 241, 0.15)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    if (!this.value || this.style.borderColor !== 'rgb(239, 68, 68)') {
+                        this.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                        this.style.boxShadow = '';
+                    }
+                });
+            });
+        });
+        
+        // ========================================
+        // ANIMATIONS AU CHARGEMENT
+        // ========================================
+        
+        window.addEventListener('load', function() {
+            // Animation des cartes
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+            
+            // Animation de la sidebar
+            const sidebarIcons = document.querySelectorAll('.sidebar-icon');
+            sidebarIcons.forEach((icon, index) => {
+                icon.style.opacity = '0';
+                icon.style.transform = 'translateX(-20px)';
+                
+                setTimeout(() => {
+                    icon.style.transition = 'all 0.4s ease';
+                    icon.style.opacity = '1';
+                    icon.style.transform = 'translateX(0)';
+                }, 300 + (index * 50));
+            });
+        });
+        
+        // ========================================
+        // AUTO-DISMISS DES ALERTES
+        // ========================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.transition = 'all 0.3s ease';
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateY(-10px)';
+                    
+                    setTimeout(() => {
+                        alert.remove();
+                    }, 300);
+                }, 5000);
+            });
+        });
+        
+        // ========================================
+        // TOOLTIPS POUR LA SIDEBAR
+        // ========================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarIcons = document.querySelectorAll('.sidebar-icon');
+            
+            sidebarIcons.forEach(icon => {
+                const tooltip = document.createElement('div');
+                tooltip.textContent = icon.getAttribute('title') || 'Menu';
+                tooltip.style.cssText = `
+                    position: absolute;
+                    left: 70px;
+                    background: rgba(15, 23, 42, 0.95);
+                    color: white;
+                    padding: 8px 12px;
+                    border-radius: 8px;
+                    font-size: 12px;
+                    font-weight: 600;
+                    white-space: nowrap;
+                    pointer-events: none;
+                    opacity: 0;
+                    transform: translateX(-10px);
+                    transition: all 0.3s ease;
+                    z-index: 1000;
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                `;
+                
+                icon.style.position = 'relative';
+                icon.appendChild(tooltip);
+                
+                icon.addEventListener('mouseenter', () => {
+                    tooltip.style.opacity = '1';
+                    tooltip.style.transform = 'translateX(0)';
+                });
+                
+                icon.addEventListener('mouseleave', () => {
+                    tooltip.style.opacity = '0';
+                    tooltip.style.transform = 'translateX(-10px)';
+                });
+            });
+        });
+        
+        // ========================================
+        // RACCOURCIS CLAVIER
+        // ========================================
+        
+        document.addEventListener('keydown', function(e) {
+            // Alt + 1-6 pour naviguer entre les sections
+            if (e.altKey) {
+                const sections = ['dashboard', 'models', 'sensors', 'stats', 'history', 'settings'];
+                const key = parseInt(e.key);
+                
+                if (key >= 1 && key <= 6) {
+                    e.preventDefault();
+                    showSection(sections[key - 1]);
+                }
+            }
+            
+            // Ctrl + R pour réinitialiser le formulaire
+            if (e.ctrlKey && e.key === 'r') {
+                e.preventDefault();
+                resetForm();
+            }
+        });
+        
+        // ========================================
+        // GESTION DU FORMULAIRE
+        // ========================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('predictionForm');
+            
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    const submitBtn = form.querySelector('.btn-primary');
+                    
+                    // Animation du bouton pendant la soumission
+                    submitBtn.innerHTML = '<svg style="width: 18px; height: 18px; animation: spin 1s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg> Processing...';
+                    submitBtn.disabled = true;
+                });
+            }
+        });
+        
+        // ========================================
+        // ANIMATION DE ROTATION POUR LE LOADER
+        // ========================================
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+            
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .content-section {
+                animation: fadeIn 0.5s ease;
+            }
+            
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .empty-state {
+                text-align: center;
+                padding: 60px 20px;
+            }
+            
+            .empty-state-icon {
+                font-size: 4rem;
+                opacity: 0.3;
+                margin-bottom: 20px;
+            }
+            
+            .empty-state-text {
+                color: var(--text-secondary);
+                font-size: 14px;
+                line-height: 1.6;
+            }
+            
+            .alert {
+                animation: slideIn 0.3s ease;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // ========================================
+        // INTERACTION AVEC LES CARTES DE MODÈLES
+        // ========================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const modelCards = document.querySelectorAll('.model-card');
+            
+            modelCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.transform = 'translateY(-5px) scale(1.02)';
+                    }
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.transform = '';
+                    }
+                });
+            });
+        });
+        
+        // ========================================
+        // GESTION DU SCROLL SMOOTH
+        // ========================================
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // ========================================
+        // DÉTECTION DE LA SECTION ACTIVE AU SCROLL
+        // ========================================
+        
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.content-section');
+            const scrollPosition = window.scrollY + 100;
+            
+            sections.forEach(section => {
+                if (section.style.display !== 'none') {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        const sectionId = section.id.replace('-section', '');
+                        
+                        document.querySelectorAll('.sidebar-icon').forEach(icon => {
+                            icon.classList.remove('active');
+                            if (icon.dataset.section === sectionId) {
+                                icon.classList.add('active');
+                            }
+                        });
+                    }
+                }
+            });
+        });
+        
+        // ========================================
+        // CONSOLE LOG POUR DEBUG
+        // ========================================
+        
+        console.log('%c🧠 Smart Occupancy Detection System', 'color: #6366f1; font-size: 16px; font-weight: bold;');
+        console.log('%cMeta-Learning Dashboard v1.0', 'color: #8b5cf6; font-size: 12px;');
+        console.log('%c✓ System initialized successfully', 'color: #10b981; font-size: 12px;');
+        
+        // ========================================
+        // INITIALISATION
+        // ========================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Dashboard ready!');
+            
+            // Afficher la section dashboard par défaut
+            showSection('dashboard');
+        });
+    </script>
 </body>
 </html>
