@@ -1,0 +1,28 @@
+2025-12-08 13:16:56 - occupancy_detection - INFO - Début du chargement des modèles...
+2025-12-08 13:17:09 - occupancy_detection - INFO - === Tous les modèles chargés avec succès ===
+2025-12-08 13:17:09 - occupancy_detection - INFO - ============================================================
+2025-12-08 13:17:09 - occupancy_detection - INFO - ============================================================
+2025-12-08 13:18:39 - occupancy_detection - INFO - Prédiction: Inoccupé | Modèle: Decision Tree | Confiance: 100% | Temps: 51.39ms
+2025-12-08 13:19:47 - occupancy_detection - INFO - Prédiction: Inoccupé | Modèle: Decision Tree | Confiance: 100% | Temps: 44.84ms
+2025-12-08 13:20:04 - occupancy_detection - INFO - Prédiction: Inoccupé | Modèle: Decision Tree | Confiance: 100% | Temps: 0.00ms
+2025-12-08 13:21:24 - occupancy_detection - INFO - Debut du chargement des modeles...
+2025-12-08 13:21:25 - occupancy_detection - INFO - [OK] Scaler charge
+2025-12-08 13:21:25 - occupancy_detection - INFO - [OK] Modele charge: Decision Tree
+2025-12-08 13:21:25 - occupancy_detection - INFO - [OK] Modele charge: Random Forest
+2025-12-08 13:21:25 - occupancy_detection - INFO - [OK] Modele charge: SVM
+2025-12-08 13:21:25 - occupancy_detection - INFO - [OK] Modele charge: Naive Bayes
+2025-12-08 13:21:25 - occupancy_detection - INFO - [OK] Meta-modele KNN charge
+2025-12-08 13:21:25 - occupancy_detection - INFO - === Tous les modeles charges avec succes ===
+2025-12-08 13:21:25 - occupancy_detection - INFO - [OK] Gestionnaire de modeles initialise
+2025-12-08 13:23:33 - occupancy_detection - INFO - Prediction: Inoccupe | Modele: Decision Tree | Confiance: 100% | Temps: 37.33ms
+2025-12-08 13:30:41 - occupancy_detection - INFO - Prediction: Inoccupe | Modele: Decision Tree | Confiance: 100% | Temps: 0.00ms
+2025-12-08 13:30:53 - occupancy_detection - INFO - Debut du chargement des modeles...
+2025-12-08 13:30:54 - occupancy_detection - INFO - [OK] Scaler charge
+2025-12-08 13:30:54 - occupancy_detection - INFO - [OK] Modele charge: Decision Tree
+2025-12-08 13:30:54 - occupancy_detection - INFO - [OK] Modele charge: Random Forest
+2025-12-08 13:30:54 - occupancy_detection - INFO - [OK] Modele charge: SVM
+2025-12-08 13:30:54 - occupancy_detection - INFO - [OK] Modele charge: Naive Bayes
+2025-12-08 13:30:54 - occupancy_detection - INFO - [OK] Meta-modele KNN charge
+2025-12-08 13:30:54 - occupancy_detection - INFO - === Tous les modeles charges avec succes ===
+2025-12-08 13:30:54 - occupancy_detection - INFO - [OK] Gestionnaire de modeles initialise
+2025-12-08 13:31:01 - occupancy_detection - INFO - Prediction: Inoccupe | Modele: Decision Tree | Confiance: 100% | Temps: 76.72ms

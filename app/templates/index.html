@@ -188,20 +188,20 @@
 
                     <div class="model-selection">
                         {% if all_models_details %}
-                            <div class="model-card {% if model_name == 'Arbre de Décision' %}selected{% endif %}">
+                            <div class="model-card {% if model_name == 'Decision Tree' %}selected{% endif %}">
                                 <div class="model-icon">🌳</div>
                                 <div class="model-name">Arbre de Décision</div>
-                                <div class="model-score">{{ all_models_details.get('Arbre de Décision', {}).get('confidence_percent', '--') }}</div>
+                                <div class="model-score">{{ all_models_details.get('Decision Tree', {}).get('confidence_percent', '--') }}</div>
                                 <div style="font-size: 10px; color: var(--text-secondary); margin-top: 5px;">
-                                    Préd: {{ all_models_details.get('Arbre de Décision', {}).get('prediction', '--') }}
+                                    Préd: {{ all_models_details.get('Decision Tree', {}).get('prediction', '--') }}
                                 </div>
                             </div>
-                            <div class="model-card {% if model_name == 'Forêt Aléatoire' %}selected{% endif %}">
+                            <div class="model-card {% if model_name == 'Random Forest' %}selected{% endif %}">
                                 <div class="model-icon">🌲</div>
                                 <div class="model-name">Forêt Aléatoire</div>
-                                <div class="model-score">{{ all_models_details.get('Forêt Aléatoire', {}).get('confidence_percent', '--') }}</div>
+                                <div class="model-score">{{ all_models_details.get('Random Forest', {}).get('confidence_percent', '--') }}</div>
                                 <div style="font-size: 10px; color: var(--text-secondary); margin-top: 5px;">
-                                    Préd: {{ all_models_details.get('Forêt Aléatoire', {}).get('prediction', '--') }}
+                                    Préd: {{ all_models_details.get('Random Forest', {}).get('prediction', '--') }}
                                 </div>
                             </div>
                             <div class="model-card {% if model_name == 'SVM' %}selected{% endif %}">
@@ -212,12 +212,12 @@
                                     Préd: {{ all_models_details.get('SVM', {}).get('prediction', '--') }}
                                 </div>
                             </div>
-                            <div class="model-card {% if model_name == 'Bayésien Naïf' %}selected{% endif %}">
+                            <div class="model-card {% if model_name == 'Naive Bayes' %}selected{% endif %}">
                                 <div class="model-icon">📊</div>
                                 <div class="model-name">Bayésien Naïf</div>
-                                <div class="model-score">{{ all_models_details.get('Bayésien Naïf', {}).get('confidence_percent', '--') }}</div>
+                                <div class="model-score">{{ all_models_details.get('Naive Bayes', {}).get('confidence_percent', '--') }}</div>
                                 <div style="font-size: 10px; color: var(--text-secondary); margin-top: 5px;">
-                                    Préd: {{ all_models_details.get('Bayésien Naïf', {}).get('prediction', '--') }}
+                                    Préd: {{ all_models_details.get('Naive Bayes', {}).get('prediction', '--') }}
                                 </div>
                             </div>
                         {% else %}
