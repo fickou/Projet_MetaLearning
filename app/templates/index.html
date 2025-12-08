@@ -1,55 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Occupancy Detection – Meta Learning Dashboard</title>
+    <title>Détection Intelligente d'Occupation – Tableau de Bord Meta Learning</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <!-- Top Navigation -->
+    <!-- Navigation supérieure -->
     <nav class="top-nav">
         <div class="nav-logo">
             <div class="logo-icon">🧠</div>
             <div>
                 <div class="nav-title">
-                    Smart Occupancy Detection
-                    <span class="nav-subtitle">Meta Learning System</span>
+                    Détection Intelligente d'Occupation
+                    <span class="nav-subtitle">Système Meta Learning</span>
                 </div>
             </div>
         </div>
         <div class="nav-status">
             <span class="status-dot"></span>
-            <span style="font-size: 13px; font-weight: 600;">System Operational</span>
+            <span style="font-size: 13px; font-weight: 600;">Système Opérationnel</span>
         </div>
     </nav>
 
-    <!-- Sidebar -->
+    <!-- Barre latérale -->
     <aside class="sidebar">
-        <div class="sidebar-icon active" onclick="showSection('dashboard')" data-section="dashboard" title="Dashboard">
+        <div class="sidebar-icon active" onclick="showSection('dashboard')" data-section="dashboard" title="Tableau de bord">
             <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
         </div>
-        <div class="sidebar-icon" onclick="showSection('models')" data-section="models" title="Models">
+        <div class="sidebar-icon" onclick="showSection('models')" data-section="models" title="Modèles">
             <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
         </div>
-        <div class="sidebar-icon" onclick="showSection('sensors')" data-section="sensors" title="Sensors">
+        <div class="sidebar-icon" onclick="showSection('sensors')" data-section="sensors" title="Capteurs">
             <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
         </div>
-        <div class="sidebar-icon" onclick="showSection('stats')" data-section="stats" title="Statistics">
+        <div class="sidebar-icon" onclick="showSection('stats')" data-section="stats" title="Statistiques">
             <svg viewBox="0 0 24 24"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg>
         </div>
-        <div class="sidebar-icon" onclick="showSection('history')" data-section="history" title="History">
+        <div class="sidebar-icon" onclick="showSection('history')" data-section="history" title="Historique">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
         </div>
-        <div class="sidebar-icon" onclick="showSection('settings')" data-section="settings" title="Settings">
+        <div class="sidebar-icon" onclick="showSection('settings')" data-section="settings" title="Paramètres">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M12 1v6m0 6v6m9-9h-6m-6 0H3"></path></svg>
         </div>
     </aside>
 
-    <!-- Main Content -->
+    <!-- Contenu principal -->
     <main class="main-content">
-        <!-- Flash Messages -->
+        <!-- Messages flash -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -61,16 +61,16 @@
             {% endif %}
         {% endwith %}
 
-        <!-- Dashboard Section -->
+        <!-- Section Tableau de bord -->
         <div id="dashboard-section" class="content-section active">
             <div class="dashboard-grid">
-                <!-- Input Form -->
+                <!-- Formulaire de saisie -->
                 <div class="glass-card">
                     <div class="card-header">
                         <div class="card-icon">📊</div>
                         <div>
-                            <div class="card-title">Sensor Data Input</div>
-                            <div class="card-subtitle">Enter IoT sensor measurements</div>
+                            <div class="card-title">Saisie des Données des Capteurs</div>
+                            <div class="card-subtitle">Entrez les mesures des capteurs IoT</div>
                         </div>
                     </div>
 
@@ -79,7 +79,7 @@
                             <div class="input-group">
                                 <label class="input-label">
                                     <svg viewBox="0 0 24 24"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"></path></svg>
-                                    Temperature (°C)
+                                    Température (°C)
                                 </label>
                                 <input name="temp" type="number" step="0.01" class="input-field" placeholder="21.5" value="{{ form.temp }}" required>
                             </div>
@@ -87,7 +87,7 @@
                             <div class="input-group">
                                 <label class="input-label">
                                     <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
-                                    Humidity (%)
+                                    Humidité (%)
                                 </label>
                                 <input name="hum" type="number" step="0.01" class="input-field" placeholder="45.2" value="{{ form.hum }}" required>
                             </div>
@@ -95,7 +95,7 @@
                             <div class="input-group">
                                 <label class="input-label">
                                     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                                    Light (Lux)
+                                    Lumière (Lux)
                                 </label>
                                 <input name="light" type="number" step="0.01" class="input-field" placeholder="520" value="{{ form.light }}" required>
                             </div>
@@ -111,7 +111,7 @@
                             <div class="input-group">
                                 <label class="input-label">
                                     <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
-                                    Humidity Ratio
+                                    Ratio d'Humidité
                                 </label>
                                 <input name="hr" type="number" step="0.0001" class="input-field" placeholder="0.0045" value="{{ form.hr }}" required>
                             </div>
@@ -119,7 +119,7 @@
                             <div class="input-group">
                                 <label class="input-label">
                                     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                    Time Index
+                                    Indice Temps
                                 </label>
                                 <input name="time" type="number" step="1" class="input-field" placeholder="15" value="{{ form.time }}">
                             </div>
@@ -128,23 +128,23 @@
                         <div class="btn-group">
                             <button type="submit" class="btn btn-primary">
                                 <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                                Predict Occupancy
+                                Prédire l'Occupation
                             </button>
                             <button type="button" class="btn btn-secondary" onclick="resetForm()">
                                 <svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"></path><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
-                                Reset
+                                Réinitialiser
                             </button>
                         </div>
                     </form>
                 </div>
 
-                <!-- Prediction Results -->
+                <!-- Résultats de prédiction -->
                 <div class="glass-card">
                     <div class="card-header">
                         <div class="card-icon">🎯</div>
                         <div>
-                            <div class="card-title">Prediction Results</div>
-                            <div class="card-subtitle">Meta-learning model output</div>
+                            <div class="card-title">Résultats de Prédiction</div>
+                            <div class="card-subtitle">Sortie du modèle meta-learning</div>
                         </div>
                     </div>
 
@@ -153,16 +153,16 @@
                         <div class="prediction-icon-large">
                             {% if 'Occupé' in prediction %}👥{% else %}🚪{% endif %}
                         </div>
-                        <div class="prediction-label">Prediction Status</div>
+                        <div class="prediction-label">Statut de Prédiction</div>
                         <div class="prediction-value">{{ prediction }}</div>
                         
                         <div class="prediction-details">
                             <div class="detail-item">
-                                <div class="detail-label">Selected Model</div>
+                                <div class="detail-label">Modèle Sélectionné</div>
                                 <div class="detail-value">{{ model_name }}</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Confidence Score</div>
+                                <div class="detail-label">Score de Confiance</div>
                                 <div class="detail-value">{{ confidence_percent }}</div>
                                 <div class="confidence-bar">
                                     <div class="confidence-fill" style="width: {{ confidence_percent }};"></div>
@@ -174,34 +174,34 @@
                     <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-value">20K+</div>
-                            <div class="stat-label">Training Samples</div>
+                            <div class="stat-label">Échantillons d'Entraînement</div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-value">4</div>
-                            <div class="stat-label">Base Models</div>
+                            <div class="stat-label">Modèles de Base</div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-value">{{ confidence_percent }}</div>
-                            <div class="stat-label">Current Confidence</div>
+                            <div class="stat-label">Confiance Actuelle</div>
                         </div>
                     </div>
 
                     <div class="model-selection">
                         {% if all_models_details %}
-                            <div class="model-card {% if model_name == 'Decision Tree' %}selected{% endif %}">
+                            <div class="model-card {% if model_name == 'Arbre de Décision' %}selected{% endif %}">
                                 <div class="model-icon">🌳</div>
-                                <div class="model-name">Decision Tree</div>
-                                <div class="model-score">{{ all_models_details.get('Decision Tree', {}).get('confidence_percent', '--') }}</div>
+                                <div class="model-name">Arbre de Décision</div>
+                                <div class="model-score">{{ all_models_details.get('Arbre de Décision', {}).get('confidence_percent', '--') }}</div>
                                 <div style="font-size: 10px; color: var(--text-secondary); margin-top: 5px;">
-                                    Pred: {{ all_models_details.get('Decision Tree', {}).get('prediction', '--') }}
+                                    Préd: {{ all_models_details.get('Arbre de Décision', {}).get('prediction', '--') }}
                                 </div>
                             </div>
-                            <div class="model-card {% if model_name == 'Random Forest' %}selected{% endif %}">
+                            <div class="model-card {% if model_name == 'Forêt Aléatoire' %}selected{% endif %}">
                                 <div class="model-icon">🌲</div>
-                                <div class="model-name">Random Forest</div>
-                                <div class="model-score">{{ all_models_details.get('Random Forest', {}).get('confidence_percent', '--') }}</div>
+                                <div class="model-name">Forêt Aléatoire</div>
+                                <div class="model-score">{{ all_models_details.get('Forêt Aléatoire', {}).get('confidence_percent', '--') }}</div>
                                 <div style="font-size: 10px; color: var(--text-secondary); margin-top: 5px;">
-                                    Pred: {{ all_models_details.get('Random Forest', {}).get('prediction', '--') }}
+                                    Préd: {{ all_models_details.get('Forêt Aléatoire', {}).get('prediction', '--') }}
                                 </div>
                             </div>
                             <div class="model-card {% if model_name == 'SVM' %}selected{% endif %}">
@@ -209,26 +209,26 @@
                                 <div class="model-name">SVM</div>
                                 <div class="model-score">{{ all_models_details.get('SVM', {}).get('confidence_percent', '--') }}</div>
                                 <div style="font-size: 10px; color: var(--text-secondary); margin-top: 5px;">
-                                    Pred: {{ all_models_details.get('SVM', {}).get('prediction', '--') }}
+                                    Préd: {{ all_models_details.get('SVM', {}).get('prediction', '--') }}
                                 </div>
                             </div>
-                            <div class="model-card {% if model_name == 'Naive Bayes' %}selected{% endif %}">
+                            <div class="model-card {% if model_name == 'Bayésien Naïf' %}selected{% endif %}">
                                 <div class="model-icon">📊</div>
-                                <div class="model-name">Naive Bayes</div>
-                                <div class="model-score">{{ all_models_details.get('Naive Bayes', {}).get('confidence_percent', '--') }}</div>
+                                <div class="model-name">Bayésien Naïf</div>
+                                <div class="model-score">{{ all_models_details.get('Bayésien Naïf', {}).get('confidence_percent', '--') }}</div>
                                 <div style="font-size: 10px; color: var(--text-secondary); margin-top: 5px;">
-                                    Pred: {{ all_models_details.get('Naive Bayes', {}).get('prediction', '--') }}
+                                    Préd: {{ all_models_details.get('Bayésien Naïf', {}).get('prediction', '--') }}
                                 </div>
                             </div>
                         {% else %}
                             <div class="model-card">
                                 <div class="model-icon">🌳</div>
-                                <div class="model-name">Decision Tree</div>
+                                <div class="model-name">Arbre de Décision</div>
                                 <div class="model-score">--</div>
                             </div>
                             <div class="model-card">
                                 <div class="model-icon">🌲</div>
-                                <div class="model-name">Random Forest</div>
+                                <div class="model-name">Forêt Aléatoire</div>
                                 <div class="model-score">--</div>
                             </div>
                             <div class="model-card">
@@ -238,7 +238,7 @@
                             </div>
                             <div class="model-card">
                                 <div class="model-icon">📊</div>
-                                <div class="model-name">Naive Bayes</div>
+                                <div class="model-name">Bayésien Naïf</div>
                                 <div class="model-score">--</div>
                             </div>
                         {% endif %}
@@ -247,89 +247,89 @@
                     <div class="empty-state">
                         <div class="empty-state-icon">📊</div>
                         <div class="empty-state-text">
-                            Enter the sensor values and click "Predict Occupancy" to see the results.<br>
-                            The Meta-Learning system will analyze the data and select the best model.
+                            Entrez les valeurs des capteurs et cliquez sur "Prédire l'Occupation" pour voir les résultats.<br>
+                            Le système Meta-Learning analysera les données et sélectionnera le meilleur modèle.
                         </div>
                     </div>
                     {% endif %}
                 </div>
 
-                <!-- Explainability Section -->
+                <!-- Section Explicabilité -->
                 <div class="glass-card full-width">
                     <div class="card-header">
                         <div class="card-icon">🔍</div>
                         <div>
-                            <div class="card-title">Meta-Learning Explainability</div>
-                            <div class="card-subtitle">Model selection process visualization</div>
+                            <div class="card-title">Explicabilité Meta-Learning</div>
+                            <div class="card-subtitle">Visualisation du processus de sélection de modèle</div>
                         </div>
                     </div>
 
                     <div class="explainability-flow">
                         <div class="flow-step">
                             <div class="flow-icon">📥</div>
-                            <div class="flow-label">Input Data<br>Normalization</div>
+                            <div class="flow-label">Données d'Entrée<br>Normalisation</div>
                         </div>
                         <div class="flow-step">
                             <div class="flow-icon">🤖</div>
-                            <div class="flow-label">4 Base Models<br>Predictions</div>
+                            <div class="flow-label">4 Modèles de Base<br>Prédictions</div>
                         </div>
                         <div class="flow-step">
                             <div class="flow-icon">🧮</div>
-                            <div class="flow-label">Meta-Features<br>Extraction</div>
+                            <div class="flow-label">Méta-Caractéristiques<br>Extraction</div>
                         </div>
                         <div class="flow-step">
                             <div class="flow-icon">🎯</div>
-                            <div class="flow-label">KNN Meta-Model<br>Selection (k=5)</div>
+                            <div class="flow-label">Méta-Modèle KNN<br>Sélection (k=5)</div>
                         </div>
                         <div class="flow-step">
                             <div class="flow-icon">✅</div>
-                            <div class="flow-label">Final<br>Prediction</div>
+                            <div class="flow-label">Prédiction<br>Finale</div>
                         </div>
                     </div>
 
                     <div style="margin-top: 30px;">
                         <div style="font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;">
-                            Meta-Features (8 Features Total: Confidence Max + Margin)
+                            Méta-Caractéristiques (8 au total : Confiance Max + Marge)
                         </div>
                         <div class="meta-features">
                             <div class="meta-feature-card">
                                 <div class="meta-feature-icon">📈</div>
-                                <div class="meta-feature-name">DT Confidence</div>
+                                <div class="meta-feature-name">Confiance AD</div>
                                 <div class="meta-feature-value">max(P)</div>
                             </div>
                             <div class="meta-feature-card">
                                 <div class="meta-feature-icon">📊</div>
-                                <div class="meta-feature-name">DT Margin</div>
+                                <div class="meta-feature-name">Marge AD</div>
                                 <div class="meta-feature-value">|P₁ - P₂|</div>
                             </div>
                             <div class="meta-feature-card">
                                 <div class="meta-feature-icon">📈</div>
-                                <div class="meta-feature-name">RF Confidence</div>
+                                <div class="meta-feature-name">Confiance FA</div>
                                 <div class="meta-feature-value">max(P)</div>
                             </div>
                             <div class="meta-feature-card">
                                 <div class="meta-feature-icon">📊</div>
-                                <div class="meta-feature-name">RF Margin</div>
+                                <div class="meta-feature-name">Marge FA</div>
                                 <div class="meta-feature-value">|P₁ - P₂|</div>
                             </div>
                             <div class="meta-feature-card">
                                 <div class="meta-feature-icon">📈</div>
-                                <div class="meta-feature-name">SVM Confidence</div>
+                                <div class="meta-feature-name">Confiance SVM</div>
                                 <div class="meta-feature-value">max(P)</div>
                             </div>
                             <div class="meta-feature-card">
                                 <div class="meta-feature-icon">📊</div>
-                                <div class="meta-feature-name">SVM Margin</div>
+                                <div class="meta-feature-name">Marge SVM</div>
                                 <div class="meta-feature-value">|P₁ - P₂|</div>
                             </div>
                             <div class="meta-feature-card">
                                 <div class="meta-feature-icon">📈</div>
-                                <div class="meta-feature-name">NB Confidence</div>
+                                <div class="meta-feature-name">Confiance BN</div>
                                 <div class="meta-feature-value">max(P)</div>
                             </div>
                             <div class="meta-feature-card">
                                 <div class="meta-feature-icon">📊</div>
-                                <div class="meta-feature-name">NB Margin</div>
+                                <div class="meta-feature-name">Marge BN</div>
                                 <div class="meta-feature-value">|P₁ - P₂|</div>
                             </div>
                         </div>
@@ -338,180 +338,180 @@
             </div>
         </div>
 
-        <!-- Models Section -->
+        <!-- Section Modèles -->
         <div id="models-section" class="content-section" style="display: none;">
             <div class="glass-card">
                 <div class="card-header">
                     <div class="card-icon">🤖</div>
                     <div>
-                        <div class="card-title">Base Models Information</div>
-                        <div class="card-subtitle">Details about the 4 classification models</div>
+                        <div class="card-title">Informations sur les Modèles de Base</div>
+                        <div class="card-subtitle">Détails sur les 4 modèles de classification</div>
                     </div>
                 </div>
                 <div class="model-selection" style="grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 20px;">
                     <div class="model-card" style="padding: 30px;">
                         <div class="model-icon" style="width: 60px; height: 60px; font-size: 30px; margin-bottom: 15px;">🌳</div>
-                        <div class="model-name" style="font-size: 18px; margin-bottom: 10px;">Decision Tree</div>
+                        <div class="model-name" style="font-size: 18px; margin-bottom: 10px;">Arbre de Décision</div>
                         <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
-                            Fast and interpretable classifier using tree-based decision rules.
+                            Classificateur rapide et interprétable utilisant des règles de décision arborescentes.
                         </div>
                     </div>
                     <div class="model-card" style="padding: 30px;">
                         <div class="model-icon" style="width: 60px; height: 60px; font-size: 30px; margin-bottom: 15px;">🌲</div>
-                        <div class="model-name" style="font-size: 18px; margin-bottom: 10px;">Random Forest</div>
+                        <div class="model-name" style="font-size: 18px; margin-bottom: 10px;">Forêt Aléatoire</div>
                         <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
-                            Ensemble of decision trees for robust predictions.
+                            Ensemble d'arbres de décision pour des prédictions robustes.
                         </div>
                     </div>
                     <div class="model-card" style="padding: 30px;">
                         <div class="model-icon" style="width: 60px; height: 60px; font-size: 30px; margin-bottom: 15px;">⚡</div>
                         <div class="model-name" style="font-size: 18px; margin-bottom: 10px;">SVM</div>
                         <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
-                            Support Vector Machine for complex decision boundaries.
+                            Machine à Vecteurs de Support pour des frontières de décision complexes.
                         </div>
                     </div>
                     <div class="model-card" style="padding: 30px;">
                         <div class="model-icon" style="width: 60px; height: 60px; font-size: 30px; margin-bottom: 15px;">📊</div>
-                        <div class="model-name" style="font-size: 18px; margin-bottom: 10px;">Naive Bayes</div>
+                        <div class="model-name" style="font-size: 18px; margin-bottom: 10px;">Bayésien Naïf</div>
                         <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
-                            Probabilistic classifier based on Bayes' theorem.
+                            Classificateur probabiliste basé sur le théorème de Bayes.
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Sensors Section -->
+        <!-- Section Capteurs -->
         <div id="sensors-section" class="content-section" style="display: none;">
             <div class="glass-card">
                 <div class="card-header">
                     <div class="card-icon">📡</div>
                     <div>
-                        <div class="card-title">IoT Sensors Information</div>
-                        <div class="card-subtitle">Details about the 6 environmental sensors</div>
+                        <div class="card-title">Informations sur les Capteurs IoT</div>
+                        <div class="card-subtitle">Détails sur les 6 capteurs environnementaux</div>
                     </div>
                 </div>
                 <div style="margin-top: 30px;">
                     <div class="meta-features" style="grid-template-columns: repeat(3, 1fr);">
                         <div class="meta-feature-card" style="padding: 25px;">
                             <div class="meta-feature-icon" style="width: 50px; height: 50px; font-size: 24px;">🌡️</div>
-                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">Temperature</div>
-                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">-30°C to 60°C</div>
+                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">Température</div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">-30°C à 60°C</div>
                         </div>
                         <div class="meta-feature-card" style="padding: 25px;">
                             <div class="meta-feature-icon" style="width: 50px; height: 50px; font-size: 24px;">💧</div>
-                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">Humidity</div>
-                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">0% to 100%</div>
+                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">Humidité</div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">0% à 100%</div>
                         </div>
                         <div class="meta-feature-card" style="padding: 25px;">
                             <div class="meta-feature-icon" style="width: 50px; height: 50px; font-size: 24px;">💡</div>
-                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">Light</div>
-                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">0 to 2000 Lux</div>
+                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">Lumière</div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">0 à 2000 Lux</div>
                         </div>
                         <div class="meta-feature-card" style="padding: 25px;">
                             <div class="meta-feature-icon" style="width: 50px; height: 50px; font-size: 24px;">☁️</div>
                             <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">CO₂</div>
-                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">0 to 5000 ppm</div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">0 à 5000 ppm</div>
                         </div>
                         <div class="meta-feature-card" style="padding: 25px;">
                             <div class="meta-feature-icon" style="width: 50px; height: 50px; font-size: 24px;">💦</div>
-                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">Humidity Ratio</div>
-                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">0 to 0.02</div>
+                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">Ratio d'Humidité</div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">0 à 0.02</div>
                         </div>
                         <div class="meta-feature-card" style="padding: 25px;">
                             <div class="meta-feature-icon" style="width: 50px; height: 50px; font-size: 24px;">⏰</div>
-                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">Time Index</div>
-                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">Temporal feature</div>
+                            <div class="meta-feature-name" style="font-size: 14px; margin-top: 12px;">Indice Temps</div>
+                            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;">Caractéristique temporelle</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Stats Section -->
+        <!-- Section Statistiques -->
         <div id="stats-section" class="content-section" style="display: none;">
             <div class="glass-card">
                 <div class="card-header">
                     <div class="card-icon">📈</div>
                     <div>
-                        <div class="card-title">System Statistics</div>
-                        <div class="card-subtitle">Performance metrics and dataset information</div>
+                        <div class="card-title">Statistiques du Système</div>
+                        <div class="card-subtitle">Métriques de performance et informations sur le jeu de données</div>
                     </div>
                 </div>
                 <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 30px;">
                     <div class="stat-card" style="padding: 40px;">
                         <div class="stat-value" style="font-size: 48px;">20K+</div>
-                        <div class="stat-label">Training Samples</div>
+                        <div class="stat-label">Échantillons d'Entraînement</div>
                     </div>
                     <div class="stat-card" style="padding: 40px;">
                         <div class="stat-value" style="font-size: 48px;">98.7%</div>
-                        <div class="stat-label">Overall Accuracy</div>
+                        <div class="stat-label">Précision Globale</div>
                     </div>
                     <div class="stat-card" style="padding: 40px;">
                         <div class="stat-value" style="font-size: 48px;">4</div>
-                        <div class="stat-label">Base Models</div>
+                        <div class="stat-label">Modèles de Base</div>
                     </div>
                     <div class="stat-card" style="padding: 40px;">
                         <div class="stat-value" style="font-size: 48px;">55%</div>
-                        <div class="stat-label">Unoccupied</div>
+                        <div class="stat-label">Non Occupé</div>
                     </div>
                     <div class="stat-card" style="padding: 40px;">
                         <div class="stat-value" style="font-size: 48px;">45%</div>
-                        <div class="stat-label">Occupied</div>
+                        <div class="stat-label">Occupé</div>
                     </div>
                     <div class="stat-card" style="padding: 40px;">
                         <div class="stat-value" style="font-size: 48px;">6</div>
-                        <div class="stat-label">Features</div>
+                        <div class="stat-label">Caractéristiques</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- History Section -->
+        <!-- Section Historique -->
         <div id="history-section" class="content-section" style="display: none;">
             <div class="glass-card">
                 <div class="card-header">
                     <div class="card-icon">📋</div>
                     <div>
-                        <div class="card-title">Prediction History</div>
-                        <div class="card-subtitle">Recent prediction records</div>
+                        <div class="card-title">Historique des Prédictions</div>
+                        <div class="card-subtitle">Enregistrements récents des prédictions</div>
                     </div>
                 </div>
                 <div style="margin-top: 30px; text-align: center; padding: 60px 20px;">
                     <div style="font-size: 4rem; opacity: 0.3; margin-bottom: 20px;">📋</div>
                     <div style="color: var(--text-secondary); font-size: 14px;">
-                        Prediction history will be displayed here.<br>
-                        Feature coming soon in the next version.
+                        L'historique des prédictions sera affiché ici.<br>
+                        Fonctionnalité à venir dans la prochaine version.
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Settings Section -->
+        <!-- Section Paramètres -->
         <div id="settings-section" class="content-section" style="display: none;">
             <div class="glass-card">
                 <div class="card-header">
                     <div class="card-icon">⚙️</div>
                     <div>
-                        <div class="card-title">System Settings</div>
-                        <div class="card-subtitle">Configuration and preferences</div>
+                        <div class="card-title">Paramètres du Système</div>
+                        <div class="card-subtitle">Configuration et préférences</div>
                     </div>
                 </div>
                 <div style="margin-top: 30px;">
                     <div class="detail-item" style="margin-bottom: 15px;">
-                        <div class="detail-label">Meta-Model Type</div>
+                        <div class="detail-label">Type de Méta-Modèle</div>
                         <div class="detail-value">KNN (k=5)</div>
                     </div>
                     <div class="detail-item" style="margin-bottom: 15px;">
-                        <div class="detail-label">Scaler</div>
+                        <div class="detail-label">Normalisateur</div>
                         <div class="detail-value">StandardScaler</div>
                     </div>
                     <div class="detail-item" style="margin-bottom: 15px;">
-                        <div class="detail-label">Meta-Features</div>
-                        <div class="detail-value">8 features (Confidence + Margin × 4 models)</div>
+                        <div class="detail-label">Méta-Caractéristiques</div>
+                        <div class="detail-value">8 caractéristiques (Confiance + Marge × 4 modèles)</div>
                     </div>
                     <div class="detail-item">
-                        <div class="detail-label">Dataset Source</div>
+                        <div class="detail-label">Source du Jeu de Données</div>
                         <div class="detail-value">UCI Machine Learning Repository</div>
                     </div>
                 </div>
@@ -519,10 +519,10 @@
         </div>
     </main>
 
-    <!-- Footer -->
+    <!-- Pied de page -->
     <footer class="footer">
         <div class="footer-text">
-            © 2025 Smart Occupancy Detection System – M2 Data Mining Project | Meta-Learning Architecture | Powered by IoT Sensors
+            © 2025 Système de Détection Intelligente d'Occupation – Projet M2 Data Mining | Architecture Meta-Learning | Alimenté par Capteurs IoT
         </div>
     </footer>
 
@@ -555,7 +555,7 @@
                 }, 10);
             }
             
-            // Mettre à jour les icônes de la sidebar
+            // Mettre à jour les icônes de la barre latérale
             const sidebarIcons = document.querySelectorAll('.sidebar-icon');
             sidebarIcons.forEach(icon => {
                 icon.classList.remove('active');
@@ -577,7 +577,7 @@
                 // Animation de confirmation
                 const resetBtn = event.target;
                 const originalHTML = resetBtn.innerHTML;
-                resetBtn.innerHTML = '<svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"></path></svg> Reset Done!';
+                resetBtn.innerHTML = '<svg style="width: 18px; height: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"></path></svg> Réinitialisé !';
                 resetBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
                 
                 setTimeout(() => {
@@ -641,7 +641,7 @@
                 }, index * 100);
             });
             
-            // Animation de la sidebar
+            // Animation de la barre latérale
             const sidebarIcons = document.querySelectorAll('.sidebar-icon');
             sidebarIcons.forEach((icon, index) => {
                 icon.style.opacity = '0';
@@ -656,7 +656,7 @@
         });
         
         // ========================================
-        // AUTO-DISMISS DES ALERTES
+        // DISPARITION AUTOMATIQUE DES ALERTES
         // ========================================
         
         document.addEventListener('DOMContentLoaded', function() {
@@ -675,7 +675,7 @@
         });
         
         // ========================================
-        // TOOLTIPS POUR LA SIDEBAR
+        // INFO-BULLES POUR LA BARRE LATÉRALE
         // ========================================
         
         document.addEventListener('DOMContentLoaded', function() {
@@ -753,7 +753,7 @@
                     const submitBtn = form.querySelector('.btn-primary');
                     
                     // Animation du bouton pendant la soumission
-                    submitBtn.innerHTML = '<svg style="width: 18px; height: 18px; animation: spin 1s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg> Processing...';
+                    submitBtn.innerHTML = '<svg style="width: 18px; height: 18px; animation: spin 1s linear infinite;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg> Traitement...';
                     submitBtn.disabled = true;
                 });
             }
@@ -842,7 +842,7 @@
         });
         
         // ========================================
-        // GESTION DU SCROLL SMOOTH
+        // GESTION DU DÉFILEMENT FLUIDE
         // ========================================
         
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -859,7 +859,7 @@
         });
         
         // ========================================
-        // DÉTECTION DE LA SECTION ACTIVE AU SCROLL
+        // DÉTECTION DE LA SECTION ACTIVE AU DÉFILEMENT
         // ========================================
         
         window.addEventListener('scroll', function() {
@@ -886,21 +886,21 @@
         });
         
         // ========================================
-        // CONSOLE LOG POUR DEBUG
+        // JOURNAL DE CONSOLE POUR LE DÉBOGAGE
         // ========================================
         
-        console.log('%c🧠 Smart Occupancy Detection System', 'color: #6366f1; font-size: 16px; font-weight: bold;');
-        console.log('%cMeta-Learning Dashboard v1.0', 'color: #8b5cf6; font-size: 12px;');
-        console.log('%c✓ System initialized successfully', 'color: #10b981; font-size: 12px;');
+        console.log('%c🧠 Système de Détection Intelligente d\'Occupation', 'color: #6366f1; font-size: 16px; font-weight: bold;');
+        console.log('%cTableau de Bord Meta-Learning v1.0', 'color: #8b5cf6; font-size: 12px;');
+        console.log('%c✓ Système initialisé avec succès', 'color: #10b981; font-size: 12px;');
         
         // ========================================
         // INITIALISATION
         // ========================================
         
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Dashboard ready!');
+            console.log('Tableau de bord prêt !');
             
-            // Afficher la section dashboard par défaut
+            // Afficher la section tableau de bord par défaut
             showSection('dashboard');
         });
     </script>
